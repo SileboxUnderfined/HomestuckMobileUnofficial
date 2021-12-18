@@ -1,3 +1,5 @@
 Kivy~=2.0.0
 python-for-android
 kivymd
+beautifulsoup4
+lxml

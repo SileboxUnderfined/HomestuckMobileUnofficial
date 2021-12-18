@@ -1,2 +1,38 @@
 <GameScreen>:
     Screen:
+        BoxLayout:
+            orientation: "vertical"
+            AnchorLayout:
+                anchor_x: "center"
+                anchor_y: "top"
+                Label:
+                    id: page
+                    font_size: 10
+
+            GridLayout:
+                cols: 4
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        id: header
+                        font_size: 56
+
+                    AsyncImage:
+                        id: center
+                        size: 650, 450
+                        width: 100
+
+                    BoxLayout:
+                        id: actionText
+                        orientation: "vertical"
+
+                    BoxLayout:
+                        orientation: "horizontal"
+                        Button:
+                            id: previousPageButton
+                            on_press: root.previousPage()
+
+                        Button:
+                            id: nextPageButton
+                            on_press: root.nextPage()
+

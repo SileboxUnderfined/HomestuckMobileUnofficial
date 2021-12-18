@@ -5,6 +5,7 @@ from kivy.app import App
 from kivy.core.text import LabelBase
 from kivy.uix.screenmanager import ScreenManager
 from kivy.lang import Builder
+
 from ui.mainMenu import MenuScreen
 from ui.gameScreen import GameScreen
 
@@ -15,7 +16,7 @@ def builderLoader():
 class MyApp(App):
     def screens(self):
         self.sm.add_widget(MenuScreen(name="menu"))
-        self.sm.add_widget(GameScreen(name="game"))
+        self.sm.add_widget(GameScreen(name="game", page=1))
 
     def build(self):
         self.sm = ScreenManager()

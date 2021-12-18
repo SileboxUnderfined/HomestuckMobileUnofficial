@@ -14,7 +14,9 @@
                     text: "start"
                     font_name: "BreakPassword"
                     font_size: 36
-                    on_press: root.manager.current = "game"
+                    on_press:
+                        root.manager.transition.direction = "up"
+                        root.manager.current = "game"
 
                 Button:
                     text: "options"
