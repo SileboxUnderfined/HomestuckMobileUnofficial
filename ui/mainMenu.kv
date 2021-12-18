@@ -1,24 +1,26 @@
 <MenuScreen>:
-    Screen:
-        BoxLayout:
+    MDScreen:
+        MDBoxLayout:
             orientation: "vertical"
-            Label:
+            MDLabel:
                 text: "HOMESTUCK MOBILE READER"
                 font_name: "CubicPixel"
                 font_size: 56
                 color: [255,17,0,1]
+                halign: "center"
 
-            BoxLayout:
+            MDBoxLayout:
                 orientation: "horizontal"
-                Button:
+                adaptive_size: True
+                MDFlatButton:
                     text: "start"
                     font_name: "BreakPassword"
                     font_size: 36
-                    on_press:
+                    on_release:
                         root.manager.transition.direction = "up"
                         root.manager.current = "game"
 
-                Button:
+                MDFlatButton:
                     text: "options"
                     font_name: "BreakPassword"
                     font_size: 36

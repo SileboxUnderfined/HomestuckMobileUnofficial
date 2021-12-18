@@ -1,38 +1,59 @@
 <GameScreen>:
-    Screen:
-        BoxLayout:
+    MDScreen:
+        MDBoxLayout:
             orientation: "vertical"
-            AnchorLayout:
-                anchor_x: "center"
-                anchor_y: "top"
-                Label:
-                    id: page
-                    font_size: 10
+            MDLabel:
+                id: header
+                font_size: 36
+                font_name: "CourierNew"
+                bold: True
 
-            GridLayout:
-                cols: 4
-                BoxLayout:
-                    orientation: "vertical"
-                    Label:
-                        id: header
-                        font_size: 56
+            MDBoxLayout:
+                orientation: "vertical"
+                id: center
+                size_hint: 1,1
 
-                    AsyncImage:
-                        id: center
-                        size: 650, 450
-                        width: 100
+            MDBoxLayout:
+                id: actionText
+                orientation: "vertical"
+                size_hint: 1,.2
 
-                    BoxLayout:
-                        id: actionText
-                        orientation: "vertical"
 
-                    BoxLayout:
-                        orientation: "horizontal"
-                        Button:
-                            id: previousPageButton
-                            on_press: root.previousPage()
+            MDBoxLayout:
+                orientation: "vertical"
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    MDFlatButton:
+                        id: previousPageButton
+                        on_release: root.previousPage()
+                        text: "Назад"
 
-                        Button:
-                            id: nextPageButton
-                            on_press: root.nextPage()
+                    MDFlatButton:
+                        id: nextPageButton
+                        on_release: root.nextPage()
 
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    MDFlatButton:
+                        id: toMainMenu
+                        on_release: root.manager.current = "menu"
+                        text: "В главное меню"
+
+                    MDFlatButton:
+                        id: autoSave
+                        on_release: root.autoSave()
+
+                    MDFlatButton:
+                        id: saveGame
+                        on_release: root.saveGame()
+                        text: "Сохранить игру"
+
+                    MDFlatButton:
+                        id: loadGame
+                        on_release: root.loadGame()
+                        text: "Загрузить игру"
+
+                    MDFlatButton:
+                        id: deleteGame
+                        on_release: root.deleteGame()
+                        text: "Удалить игру"
