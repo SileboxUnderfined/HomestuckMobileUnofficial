@@ -1,0 +1,23 @@
+<MenuScreen>:
+    Screen:
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "HOMESTUCK MOBILE READER"
+                font_name: "CubicPixel"
+                font_size: 56
+                color: [255,17,0,1]
+
+            BoxLayout:
+                orientation: "horizontal"
+                Button:
+                    text: "start"
+                    font_name: "BreakPassword"
+                    font_size: 36
+                    on_press: root.manager.current = "game"
+
+                Button:
+                    text: "options"
+                    font_name: "BreakPassword"
+                    font_size: 36
+
