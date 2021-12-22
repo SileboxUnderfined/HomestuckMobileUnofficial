@@ -1,7 +1,8 @@
 <GameScreen>:
     MDScreen:
-        MDBoxLayout:
+        BoxLayout:
             orientation: "vertical"
+
             MDLabel:
                 id: header
                 font_size: 36
@@ -18,42 +19,45 @@
                 orientation: "vertical"
                 size_hint: 1,.2
 
+            AnchorLayout:
+                anchor_x: "center"
+                anchor_y: "bottom"
+                BoxLayout:
+                    orientation: "vertical"
+                    BoxLayout:
+                        orientation: "horizontal"
+                        MDFlatButton:
+                            id: previousPageButton
+                            on_release: root.previousPage()
+                            text: "Назад"
 
-            MDBoxLayout:
-                orientation: "vertical"
-                MDBoxLayout:
-                    orientation: "horizontal"
-                    MDFlatButton:
-                        id: previousPageButton
-                        on_release: root.previousPage()
-                        text: "Назад"
+                        MDFlatButton:
+                            id: nextPageButton
+                            on_release: root.nextPage()
+                            font_size: 9
 
-                    MDFlatButton:
-                        id: nextPageButton
-                        on_release: root.nextPage()
+                    BoxLayout:
+                        orientation: "horizontal"
+                        MDFlatButton:
+                            id: toMainMenu
+                            on_release: root.manager.current = "menu"
+                            text: "В главное меню"
 
-                MDBoxLayout:
-                    orientation: "horizontal"
-                    MDFlatButton:
-                        id: toMainMenu
-                        on_release: root.manager.current = "menu"
-                        text: "В главное меню"
+                        MDFlatButton:
+                            id: autoSave
+                            on_release: root.autoSave()
 
-                    MDFlatButton:
-                        id: autoSave
-                        on_release: root.autoSave()
+                        MDFlatButton:
+                            id: saveGame
+                            on_release: root.saveGame()
+                            text: "Сохранить игру"
 
-                    MDFlatButton:
-                        id: saveGame
-                        on_release: root.saveGame()
-                        text: "Сохранить игру"
+                        MDFlatButton:
+                            id: loadGame
+                            on_release: root.loadGame()
+                            text: "Загрузить игру"
 
-                    MDFlatButton:
-                        id: loadGame
-                        on_release: root.loadGame()
-                        text: "Загрузить игру"
-
-                    MDFlatButton:
-                        id: deleteGame
-                        on_release: root.deleteGame()
-                        text: "Удалить игру"
+                        MDFlatButton:
+                            id: deleteGame
+                            on_release: root.deleteGame()
+                            text: "Удалить игру"

@@ -1,27 +1,62 @@
 <MenuScreen>:
     MDScreen:
+        md_bg_color: [1,1,1,1]
         MDBoxLayout:
             orientation: "vertical"
-            MDLabel:
-                text: "HOMESTUCK MOBILE READER"
-                font_name: "CubicPixel"
-                font_size: 56
-                color: [255,17,0,1]
-                halign: "center"
+            spacing: 50
+            MDBoxLayout:
+                orientation: "vertical"
+                MDLabel:
+                    text: "HOMESTUCK"
+                    font_name: "CubicPixel"
+                    font_size: 56
+                    color: [255,17,0,1]
+                    halign: "center"
+                    adaptive_height: True
+
+                MDLabel:
+                    text: "MOBILE"
+                    font_name: "CubicPixel"
+                    font_size: 56
+                    color: [255,17,0,1]
+                    halign: "center"
+                    adaptive_height: True
+
+                MDLabel:
+                    text: "READER"
+                    font_name: "CubicPixel"
+                    font_size: 56
+                    color: [255,17,0,1]
+                    halign: "center"
+                    adaptive_height: True
+
 
             MDBoxLayout:
-                orientation: "horizontal"
-                adaptive_size: True
+                orientation: "vertical"
+                adaptive_width: True
+                pos_hint: {"center_x":.5}
+                spacing: 30
                 MDFlatButton:
+                    id: "startButton"
                     text: "start"
                     font_name: "BreakPassword"
+                    theme_text_color: "Custom"
+                    text_color: 0.17,1,0,1
                     font_size: 36
+                    md_bg_color: [0,0,0,1]
+                    size_hint_x: 1
                     on_release:
                         root.manager.transition.direction = "up"
                         root.manager.current = "game"
 
                 MDFlatButton:
+                    id: "optionsButton"
                     text: "options"
                     font_name: "BreakPassword"
                     font_size: 36
+                    theme_text_color: "Custom"
+                    text_color: 0.17,1,0,1
+                    md_bg_color: [0,0,0,1]
 
+                Widget:
+                    adaptive_height: True

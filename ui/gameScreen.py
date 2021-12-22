@@ -15,9 +15,9 @@ class GameScreen(Screen):
         self.loadGame(True)
         self.autoSaveEnabled = autoSaveEnabled
         self.ids.autoSave.text = self.checkAutoSave()
-        self.loadPage()
+        self.loadPage(True)
 
-    def loadPage(self):
+    def loadPage(self, initial):
         self.ids.autoSave.text = self.checkAutoSave()
         if self.page == 1901:
             self.ids.previousPageButton.disabled = True
@@ -25,7 +25,7 @@ class GameScreen(Screen):
             self.ids.previousPageButton.disabled = False
 
         if self.autoSaveEnabled:
-            self.saveGame()
+            self.saveGame(initial)
 
         r = requests.get(self.url + str(self.page))
         soup = bs4.BeautifulSoup(r.text,'html.parser')
@@ -64,16 +64,16 @@ class GameScreen(Screen):
 
     def nextPage(self):
         self.page += 1
-        self.loadPage()
+        self.loadPage(False)
 
     def previousPage(self):
         self.page -= 1
-        self.loadPage()
+        self.loadPage(False)
 
-    def autoSave(self):
+    def autoSave(self, initial):
         self.autoSaveEnabled = not self.autoSaveEnabled
         self.ids.autoSave.text = self.checkAutoSave()
-        self.saveGame()
+        self.saveGame(initial)
 
     def checkAutoSave(self):
         if self.autoSaveEnabled == True:
@@ -82,15 +82,17 @@ class GameScreen(Screen):
         else:
             return "Включить автосохранение"
 
-    def saveGame(self):
-        f = open('save.json','wt')
-        data = {"page":self.page,"autoSave":self.autoSaveEnabled}
-        json.dump(data,f)
-        f.close()
-        popup = Popup(title='Игра сохранена!',
-                      content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
+    def saveGame(self, initial=False):
+        if initial == False:
+            f = open('save.json','wt')
+            data = {"page":self.page,"autoSave":self.autoSaveEnabled}
+            json.dump(data,f)
+            f.close()
 
-        popup.open()
+            popup = Popup(title='Игра сохранена!',
+                          content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
+
+            popup.open()
 
     def loadGame(self, initial=False):
         try:
@@ -107,11 +109,12 @@ class GameScreen(Screen):
         self.page = data['page']
         self.autoSaveEnabled = data['autoSave']
         f.close()
-        self.loadPage()
-        popup = Popup(title='Игра загружена!!',
-                      content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
+        self.loadPage(initial)
+        if initial == False:
+            popup = Popup(title='Игра загружена!!',
+                          content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
 
-        popup.open()
+            popup.open()
 
     def deleteGame(self):
         os.remove('save.json')
