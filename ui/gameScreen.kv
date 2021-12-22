@@ -1,12 +1,14 @@
 <GameScreen>:
     MDScreen:
-        BoxLayout:
+        md_bg_color: [0.9,0.9,0.9,1]
+        MDBoxLayout:
             orientation: "vertical"
 
             MDLabel:
                 id: header
                 font_size: 36
                 font_name: "CourierNew"
+                color: [0,0,0,1]
                 bold: True
 
             MDBoxLayout:
@@ -19,45 +21,17 @@
                 orientation: "vertical"
                 size_hint: 1,.2
 
-            AnchorLayout:
-                anchor_x: "center"
-                anchor_y: "bottom"
-                BoxLayout:
-                    orientation: "vertical"
-                    BoxLayout:
-                        orientation: "horizontal"
-                        MDFlatButton:
-                            id: previousPageButton
-                            on_release: root.previousPage()
-                            text: "Назад"
+            MDTextButton:
+                id: nextPageButton
+                on_release: root.nextPage()
+                text: "nextPageText"
+                font_name: "CourierNew"
+                bold: True
+                theme_text_color: "Custom"
+                text_color: root.nextPageButtonColor()
 
-                        MDFlatButton:
-                            id: nextPageButton
-                            on_release: root.nextPage()
-                            font_size: 9
-
-                    BoxLayout:
-                        orientation: "horizontal"
-                        MDFlatButton:
-                            id: toMainMenu
-                            on_release: root.manager.current = "menu"
-                            text: "В главное меню"
-
-                        MDFlatButton:
-                            id: autoSave
-                            on_release: root.autoSave()
-
-                        MDFlatButton:
-                            id: saveGame
-                            on_release: root.saveGame()
-                            text: "Сохранить игру"
-
-                        MDFlatButton:
-                            id: loadGame
-                            on_release: root.loadGame()
-                            text: "Загрузить игру"
-
-                        MDFlatButton:
-                            id: deleteGame
-                            on_release: root.deleteGame()
-                            text: "Удалить игру"
+            MDFloatingActionButtonSpeedDial:
+                id: FABSD
+                data: root.dataFABSD()
+                rotation_root_button: True
+                callback: root.callbackFABSD

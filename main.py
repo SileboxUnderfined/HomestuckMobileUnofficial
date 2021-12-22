@@ -16,7 +16,7 @@ def builderLoader():
 class MyApp(App):
     def screens(self):
         self.sm.add_widget(MenuScreen(name="menu"))
-        self.sm.add_widget(GameScreen(name="game", page=1, autoSaveEnabled=False))
+        self.sm.add_widget(GameScreen(name="game", page=1, autoSaveEnabled=False, sm=self.sm))
 
     def build(self):
         self.theme_cls.theme_style = "Dark"

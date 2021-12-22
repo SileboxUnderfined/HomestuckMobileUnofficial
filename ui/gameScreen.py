@@ -6,26 +6,20 @@ from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 
 class GameScreen(Screen):
-    def __init__(self, name, page=0, autoSaveEnabled=None):
+    def __init__(self,sm, name, page=0, autoSaveEnabled=None):
         super(GameScreen, self).__init__()
+        self.sm = sm
         self.name = name
         self.page = page + 1901
         self.url = "https://www.mspaintadventures.ru/?s=6&p=00"
         #self.ids.page.text = str(self.page)
         self.loadGame(True)
         self.autoSaveEnabled = autoSaveEnabled
-        self.ids.autoSave.text = self.checkAutoSave()
-        self.loadPage(True)
+        self.loadPage()
 
-    def loadPage(self, initial):
-        self.ids.autoSave.text = self.checkAutoSave()
-        if self.page == 1901:
-            self.ids.previousPageButton.disabled = True
-        else:
-            self.ids.previousPageButton.disabled = False
-
+    def loadPage(self):
         if self.autoSaveEnabled:
-            self.saveGame(initial)
+            self.saveGame()
 
         r = requests.get(self.url + str(self.page))
         soup = bs4.BeautifulSoup(r.text,'html.parser')
@@ -53,7 +47,7 @@ class GameScreen(Screen):
         ps = td.findAll('p')
         ps.pop(0)
         for p in ps:
-            self.ids.actionText.add_widget(Label(text=p.text,font_name="CourierNew",bold=True, halign="justify"))
+            self.ids.actionText.add_widget(Label(text=p.text,font_name="CourierNew",bold=True, halign="justify",color=[0,0,0,1]))
 
         print(self.ids.actionText.children)
         return True
@@ -64,31 +58,36 @@ class GameScreen(Screen):
 
     def nextPage(self):
         self.page += 1
-        self.loadPage(False)
+        self.loadPage()
 
     def previousPage(self):
-        self.page -= 1
-        self.loadPage(False)
+        if self.page -1 == 1900:
+            return
+        else:
+            self.page -= 1
+            self.loadPage()
 
-    def autoSave(self, initial):
+    def autoSave(self, initial=False):
         self.autoSaveEnabled = not self.autoSaveEnabled
-        self.ids.autoSave.text = self.checkAutoSave()
-        self.saveGame(initial)
+        autosaved = self.checkAutoSave()
+        self.saveGame(True)
+        if initial == False:
+            popup = Popup(title=autosaved,content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
+            popup.open()
 
     def checkAutoSave(self):
         if self.autoSaveEnabled == True:
-            return "Отключить автосохранение"
+            return "Автосохранение включено"
 
         else:
-            return "Включить автосохранение"
+            return "Автосохранение отключено"
 
-    def saveGame(self, initial=False):
-        if initial == False:
-            f = open('save.json','wt')
-            data = {"page":self.page,"autoSave":self.autoSaveEnabled}
-            json.dump(data,f)
-            f.close()
-
+    def saveGame(self, fromAutoSave=False):
+        f = open('save.json','wt')
+        data = {"page":self.page,"autoSave":self.autoSaveEnabled}
+        json.dump(data,f)
+        f.close()
+        if fromAutoSave == False:
             popup = Popup(title='Игра сохранена!',
                           content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
 
@@ -105,11 +104,10 @@ class GameScreen(Screen):
             if data['autoSave'] == False:
                 return
 
-        print("kek")
         self.page = data['page']
         self.autoSaveEnabled = data['autoSave']
         f.close()
-        self.loadPage(initial)
+        self.loadPage()
         if initial == False:
             popup = Popup(title='Игра загружена!!',
                           content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
@@ -122,3 +120,29 @@ class GameScreen(Screen):
                       content=Label(text="Нажмите в любое место за уведомлением чтобы закрыть его"),size=(500,100),size_hint=(None,None))
 
         popup.open()
+
+    def nextPageButtonColor(self):
+        return [0,1,0,1]
+
+    def callbackFABSD(self,instance):
+        icon = instance.icon
+        funcs = {"content-save":self.saveGame,
+                 "content-save-all":self.autoSave,
+                 "upload":self.loadGame,
+                 "delete":self.deleteGame,
+                 "step-backward":self.previousPage}
+
+        if icon in funcs:
+            funcs[icon]()
+        else:
+            self.sm.current = "menu"
+
+    def dataFABSD(self):
+        return {
+            "Сохранить игру":"content-save",
+            "Автосохранение":"content-save-all",
+            "Загрузить игру":"upload",
+            "Удалить игру":"delete",
+            "В главное меню":"menu",
+            "На предыдущую страницу":"step-backward"
+        }
